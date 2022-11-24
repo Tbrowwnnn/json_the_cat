@@ -4,15 +4,19 @@ const fetchBreedDescription = function(breedName, callback) {
 
   request(`https://api.thecatapi.com/v1/breeds/search?q=${breedName}`, (error, response, body) => {
 
+    if (error) {
+      callback(error, null);
+      return console.log(error);
+    }
+
     const data = JSON.parse(body);
 
     if (data.length === 0) {
-      {
-        console.log("Breed not found");
-        process.exit();
-      }
+
+      callback(null, "Breed not found");
+      return;
     }
-    console.log(data[0].description);
+    return callback(null, data[0].description);
   });
 };
 
